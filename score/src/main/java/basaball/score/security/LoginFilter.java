@@ -63,7 +63,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     JSONObject json = new JSONObject();
     try {
-      json.put("accessToken", TOKEN_PREFIX + token);
+      json.put("token", TOKEN_PREFIX + token);
     } catch (JSONException e) {
       e.printStackTrace();
     }
