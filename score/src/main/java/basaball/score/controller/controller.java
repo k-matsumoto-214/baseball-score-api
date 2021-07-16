@@ -15,7 +15,7 @@ public class controller {
   UtilService utilService;
 
   @GetMapping("/players/{playerId}")
-  public ResponseEntity<Object> fetchPlayer(@AuthenticationPrincipal LoginTeam team, @PathVariable int playerId) { // C064イーゼ管理ヘッダ情報取得API
+  public ResponseEntity<Object> fetchPlayer(@AuthenticationPrincipal LoginTeam team, @PathVariable int playerId) {
     return utilService.response();
   }
 }
