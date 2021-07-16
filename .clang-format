@@ -1,0 +1,11 @@
+---
+BasedOnStyle: Google
+ColumnLimit: 0
+AlignAfterOpenBracket: true
+AlignOperands: true
+AlignTrailingComments: true
+AlwaysBreakBeforeMultilineStrings: false
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Attach
+Language: Java
+...
