@@ -9,11 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UtilService {
-  /**
-   * 処理：渡されたObjectからリクエスト成功時のレスポンスを構成して返却する。
-   * 
-   * @param inputMap 返却用にJSONに変換するMap
-   */
   public ResponseEntity<Object> responseFromObject(Object inputObject) {
     GsonBuilder gsonBuilder = new GsonBuilder();
     Gson gson = gsonBuilder.serializeNulls().create();
@@ -21,10 +16,6 @@ public class UtilService {
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(json);
   }
 
-  /**
-   * 処理：リクエスト成功時のレスポンスを返却する。
-   * 
-   */
   public ResponseEntity<Object> response() {
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(null);
   }
