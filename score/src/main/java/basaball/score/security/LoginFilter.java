@@ -55,8 +55,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                                           FilterChain chain,
                                           Authentication auth) throws IOException, ServletException {
     String token = Jwts.builder()
-                       .setSubject(((LoginTeam) auth.getPrincipal()).getName())
-                       .claim("id", ((LoginTeam) auth.getPrincipal()).getId())
+                       .setSubject(Integer.toString(((LoginTeam) auth.getPrincipal()).getId()))
+                       .claim("name", ((LoginTeam) auth.getPrincipal()).getName())
                        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                        .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                        .compact();

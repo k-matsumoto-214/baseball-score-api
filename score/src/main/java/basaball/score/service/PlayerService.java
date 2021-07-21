@@ -6,6 +6,7 @@ import basaball.score.controller.exception.RegistrationException;
 import basaball.score.controller.exception.UpdateException;
 import basaball.score.dao.PlayersDao;
 import basaball.score.entity.Player;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,10 +32,11 @@ public class PlayerService {
       throw new DataNotFoundException("プレイヤーが見つかりません。");
     }
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("name", player.getName());
     result.put("number", player.getNumber());
-    result.put("birthday", player.getBirthday());
+    result.put("birthday", sdf.format(player.getBirthday()));
     result.put("position", player.getPosition());
     result.put("image", player.getImage());
     result.put("comment", player.getComment());
@@ -49,12 +51,13 @@ public class PlayerService {
     }
 
     List<Map<String, Object>> result = new ArrayList<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     for (Player player : players) {
       Map<String, Object> tempMap = new LinkedHashMap<>();
       tempMap.put("name", player.getName());
       tempMap.put("number", player.getNumber());
-      tempMap.put("birthday", player.getBirthday());
+      tempMap.put("birthday", sdf.format(player.getBirthday()));
       tempMap.put("position", player.getPosition());
       tempMap.put("image", player.getImage());
       tempMap.put("comment", player.getComment());

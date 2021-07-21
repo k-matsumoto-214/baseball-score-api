@@ -42,14 +42,16 @@ public class JwtFilter extends BasicAuthenticationFilter {
     String token = request.getHeader(HEADER_STRING);
     if (token != null) {
       // parse the token.
-      String team = Jwts.parser()
-                        .setSigningKey(SECRET.getBytes())
-                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                        .getBody()
-                        .getSubject();
+      String teamId = Jwts.parser()
+                          .setSigningKey(SECRET.getBytes())
+                          .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                          .getBody()
+                          .getSubject();
 
-      if (team != null) {
-        return new UsernamePasswordAuthenticationToken(team, null, new ArrayList<>());
+      if (teamId != null) {
+        LoginTeam loginTeam = new LoginTeam();
+        loginTeam.setId(Integer.parseInt(teamId));
+        return new UsernamePasswordAuthenticationToken(loginTeam, null, new ArrayList<>());
       }
       return null;
     }

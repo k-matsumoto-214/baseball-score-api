@@ -61,7 +61,7 @@ public class PlayersDao {
   }
 
   public void selectForUpdate(int playerId) {
-    String sql = "select * players where id = :playerId for update";
+    String sql = "select * from players where id = :playerId for update";
 
     SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId);
 
