@@ -1,7 +1,7 @@
 package basaball.score.security;
 
 import static basaball.score.security.SecurityConstants.LOGIN_URL;
-import static basaball.score.security.SecurityConstants.SIGN_UP_URL;
+import static basaball.score.security.SecurityConstants.SIGNUP_URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors()
         .and()
         .authorizeRequests()
-        .antMatchers("/pub", SIGN_UP_URL, LOGIN_URL)
+        .antMatchers("/pub", SIGNUP_URL, LOGIN_URL)
         .permitAll()
         .anyRequest()
         .authenticated()
