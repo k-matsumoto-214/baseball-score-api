@@ -60,6 +60,14 @@ public class PlayersDao {
     }
   }
 
+  public void selectForUpdate(int playerId) {
+    String sql = "select * players where id = :playerId for update";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId);
+
+    jdbcTemplate.queryForMap(sql, parameters);
+  }
+
   public int update(Player player) {
     String sql = "update players set name = :name, number = :number, birthday = :birthday, "
                  + "position = :position, image = :image, comment = :comment "
