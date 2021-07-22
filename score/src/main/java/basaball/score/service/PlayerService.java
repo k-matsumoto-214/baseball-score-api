@@ -36,7 +36,7 @@ public class PlayerService {
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("name", player.getName());
     result.put("number", player.getNumber());
-    result.put("birthday", sdf.format(player.getBirthday()));
+    result.put("birthday", player.getBirthday() != null ? sdf.format(player.getBirthday()) : null);
     result.put("position", player.getPosition());
     result.put("image", player.getImage());
     result.put("comment", player.getComment());
@@ -58,7 +58,7 @@ public class PlayerService {
       tempMap.put("id", player.getId());
       tempMap.put("name", player.getName());
       tempMap.put("number", player.getNumber());
-      tempMap.put("birthday", sdf.format(player.getBirthday()));
+      tempMap.put("birthday", player.getBirthday() != null ? sdf.format(player.getBirthday()) : null);
       tempMap.put("position", player.getPosition());
       tempMap.put("image", player.getImage());
       tempMap.put("comment", player.getComment());
