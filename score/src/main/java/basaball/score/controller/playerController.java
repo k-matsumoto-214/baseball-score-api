@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class playerController {
+public class PlayerController {
   @Autowired
   private UtilService utilService;
   @Autowired
