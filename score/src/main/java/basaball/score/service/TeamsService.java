@@ -2,6 +2,7 @@ package basaball.score.service;
 
 import basaball.score.controller.exception.DataNotFoundException;
 import basaball.score.controller.exception.DeleteException;
+import basaball.score.controller.exception.DuplicateAccountIdException;
 import basaball.score.controller.exception.RegistrationException;
 import basaball.score.controller.exception.UpdateException;
 import basaball.score.dao.TeamsDao;
@@ -20,8 +21,11 @@ public class TeamsService {
   @Autowired
   private BCryptPasswordEncoder encoder;
 
-  public void create(Team team) throws RegistrationException {
+  public void create(Team team) throws RegistrationException, DuplicateAccountIdException {
     team.setPassword(encoder.encode(team.getPassword()));
+    if (teamsDao.findByAccountId(team.getAccountId()) != 0) {
+      throw new DuplicateAccountIdException("アカウントIDが重複しています。");
+    }
     if (teamsDao.create(team) != 1) {
       throw new RegistrationException("チーム登録に失敗しました。");
     }

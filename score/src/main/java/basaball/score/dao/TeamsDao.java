@@ -67,4 +67,12 @@ public class TeamsDao {
 
     return jdbcTemplate.update(sql, parameters);
   }
+
+  public int findByAccountId(String accountId) {
+    String sql = "select count(*) from teams where account_id = :accountId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("accountId", accountId);
+
+    return jdbcTemplate.queryForObject(sql, parameters, Integer.class);
+  }
 }
