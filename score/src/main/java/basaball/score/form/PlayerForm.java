@@ -13,7 +13,7 @@ public class PlayerForm {
   @Size(min = 1, max = 100)
   @NotBlank
   private String name;
-  private int number;
+  private Integer number;
   private Date birthday;
   @Size(max = 100)
   private String position;

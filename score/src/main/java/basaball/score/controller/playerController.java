@@ -39,6 +39,7 @@ public class PlayerController {
     player.setNumber(form.getNumber());
     player.setBirthday(form.getBirthday());
     player.setPosition(form.getPosition());
+    player.setImage(form.getImage());
     player.setComment(form.getComment());
     playerService.create(player);
     return utilService.response();
