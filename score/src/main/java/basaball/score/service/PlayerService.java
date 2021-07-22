@@ -55,6 +55,7 @@ public class PlayerService {
 
     for (Player player : players) {
       Map<String, Object> tempMap = new LinkedHashMap<>();
+      tempMap.put("id", player.getId());
       tempMap.put("name", player.getName());
       tempMap.put("number", player.getNumber());
       tempMap.put("birthday", sdf.format(player.getBirthday()));
