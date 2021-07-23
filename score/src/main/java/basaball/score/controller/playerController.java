@@ -58,6 +58,7 @@ public class PlayerController {
     player.setTeamId(team.getId());
     player.setName(form.getName());
     player.setNumber(form.getNumber());
+    player.setImage(form.getImage());
     player.setBirthday(form.getBirthday());
     player.setPosition(form.getPosition());
     player.setComment(form.getComment());

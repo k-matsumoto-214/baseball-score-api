@@ -34,6 +34,7 @@ public class PlayerService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     Map<String, Object> result = new LinkedHashMap<>();
+    result.put("id", player.getId());
     result.put("name", player.getName());
     result.put("number", player.getNumber());
     result.put("birthday", player.getBirthday() != null ? sdf.format(player.getBirthday()) : null);
