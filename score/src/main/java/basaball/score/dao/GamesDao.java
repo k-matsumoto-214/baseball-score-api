@@ -62,7 +62,7 @@ public class GamesDao {
   public int update(Game game) {
     String sql = "update games set opponent_team = :opponentTeam, "
                  + "top_score = :topScore, bottom_score = :bottomScore, "
-                 + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :linupingStatus, "
+                 + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :lineupingStatus, "
                  + "top_lineup = :topLineup, bottom_lineup = :bottomLineup "
                  + "where id = :id and team_id = :teamId";
 
@@ -77,7 +77,8 @@ public class GamesDao {
                                         .addValue("resultFlg", game.isResultFlg())
                                         .addValue("lineupingStatus", game.getLineupingStatus())
                                         .addValue("topLineup", game.getTopLineup())
-                                        .addValue("bottomLineup", game.getBottomLineup());
+                                        .addValue("bottomLineup", game.getBottomLineup())
+                                        .addValue("id", game.getId());
 
     return jdbcTemplate.update(sql, parameters);
   }

@@ -5,6 +5,8 @@ import basaball.score.controller.exception.RegistrationException;
 import basaball.score.controller.exception.UpdateException;
 import basaball.score.dao.GamesDao;
 import basaball.score.entity.Game;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -39,6 +41,8 @@ public class GameService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     for (Game game : games) {
+      JsonArray topLineup = JsonParser.parseString(game.getTopLineup()).getAsJsonArray();
+      JsonArray bottomLineup = JsonParser.parseString(game.getBottomLineup()).getAsJsonArray();
       Map<String, Object> tempMap = new LinkedHashMap<>();
       tempMap.put("id", game.getId());
       tempMap.put("teamId", game.getTeamId());
@@ -51,6 +55,8 @@ public class GameService {
       tempMap.put("topFlg", game.isTopFlg());
       tempMap.put("resultFlg", game.isResultFlg());
       tempMap.put("lineupingStatus", game.getLineupingStatus());
+      tempMap.put("topLineup", topLineup);
+      tempMap.put("bottomLineup", bottomLineup);
       result.add(tempMap);
     }
 
@@ -64,6 +70,8 @@ public class GameService {
     }
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    JsonArray topLineup = JsonParser.parseString(game.getTopLineup()).getAsJsonArray();
+    JsonArray bottomLineup = JsonParser.parseString(game.getBottomLineup()).getAsJsonArray();
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("id", game.getId());
     result.put("teamId", game.getTeamId());
@@ -76,6 +84,8 @@ public class GameService {
     result.put("topFlg", game.isTopFlg());
     result.put("resultFlg", game.isResultFlg());
     result.put("lineupingStatus", game.getLineupingStatus());
+    result.put("topLineup", topLineup);
+    result.put("bottomLineup", bottomLineup);
 
     return result;
   }

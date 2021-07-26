@@ -35,7 +35,7 @@ public class GameController {
   public ResponseEntity<Object> createGame(
       @AuthenticationPrincipal LoginTeam team, @RequestBody GameForm form) throws DataNotFoundException, RegistrationException {
     Gson gson = new GsonBuilder().serializeNulls().create();
-    String topLineup = gson.toJson(form.getTopLineUp());
+    String topLineup = gson.toJson(form.getTopLineup());
     String bottomLineup = gson.toJson(form.getBottomLineup());
     Game game = new Game();
     game.setTeamId(team.getId());
@@ -56,7 +56,7 @@ public class GameController {
   @PostMapping("games/{gameId}")
   public ResponseEntity<Object> updateGame(@AuthenticationPrincipal LoginTeam team, @RequestBody GameForm form, @PathVariable int gameId) throws UpdateException {
     Gson gson = new GsonBuilder().serializeNulls().create();
-    String topLineup = gson.toJson(form.getTopLineUp());
+    String topLineup = gson.toJson(form.getTopLineup());
     String bottomLineup = gson.toJson(form.getBottomLineup());
     Game game = new Game();
     game.setId(gameId);

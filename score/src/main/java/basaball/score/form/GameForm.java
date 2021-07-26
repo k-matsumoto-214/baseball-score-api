@@ -30,6 +30,6 @@ public class GameForm {
   @Min(0)
   @Max(2)
   private int lineupingStatus;
-  private List<LineupForm> topLineUp;
+  private List<LineupForm> topLineup;
   private List<LineupForm> bottomLineup;
 }
