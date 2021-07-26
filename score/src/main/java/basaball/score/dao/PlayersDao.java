@@ -17,7 +17,7 @@ public class PlayersDao {
   private NamedParameterJdbcTemplate jdbcTemplate;
 
   public int create(Player player) {
-    String sql = "insert into players values (null, :teamId, :name, :number, :birthday, :position, :image, :comment)";
+    String sql = "insert into players values (null, :teamId, :name, :number, :birthday, :position, :image, :comment, false)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", player.getTeamId())
                                         .addValue("name", player.getName())
@@ -31,7 +31,7 @@ public class PlayersDao {
   }
 
   public Player findById(int playerId, int teamId) {
-    String sql = "select * from players where id = :playerId and team_id = :teamId";
+    String sql = "select * from players where id = :playerId and team_id = :teamId and delete_flg = false";
 
     SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId)
                                         .addValue("teamId", teamId);
@@ -46,7 +46,7 @@ public class PlayersDao {
   }
 
   public List<Player> findByTeamId(int teamId) {
-    String sql = "select * from players where team_id = :teamId";
+    String sql = "select * from players where team_id = :teamId and delete_flg = false";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId);
 
@@ -86,7 +86,7 @@ public class PlayersDao {
   }
 
   public int delete(int playerId, int teamId) {
-    String sql = "delete from players where id = :playerId and team_id = :teamId";
+    String sql = "update players set delete_flg = true where id = :playerId and team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId)
                                         .addValue("teamId", teamId);
