@@ -16,4 +16,6 @@ public class Game {
   private boolean topFlg;
   private boolean resultFlg;
   private int lineupingStatus;
+  private String topLineup;
+  private String bottomLineup;
 }

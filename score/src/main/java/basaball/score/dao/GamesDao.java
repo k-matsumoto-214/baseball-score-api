@@ -23,13 +23,15 @@ public class GamesDao {
   }
 
   public int create(Game game) {
-    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0)";
+    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0, :topLineup, :bottomLineup)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
                                         .addValue("opponentTeam", game.getOpponentTeam())
                                         .addValue("date", game.getDate())
                                         .addValue("field", game.getField())
-                                        .addValue("topFlg", game.isTopFlg());
+                                        .addValue("topFlg", game.isTopFlg())
+                                        .addValue("topLineup", game.getTopLineup())
+                                        .addValue("bottomLineup", game.getBottomLineup());
 
     return jdbcTemplate.update(sql, parameters);
   }
@@ -60,7 +62,8 @@ public class GamesDao {
   public int update(Game game) {
     String sql = "update games set opponent_team = :opponentTeam, "
                  + "top_score = :topScore, bottom_score = :bottomScore, "
-                 + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :linupingStatus "
+                 + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :lineupingStatus, "
+                 + "top_lineup = :topLineup, bottom_lineup = :bottomLineup "
                  + "where id = :id and team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
@@ -72,7 +75,10 @@ public class GamesDao {
                                         .addValue("result", game.getResult())
                                         .addValue("topFlg", game.isTopFlg())
                                         .addValue("resultFlg", game.isResultFlg())
-                                        .addValue("lineupingStatus", game.getLineupingStatus());
+                                        .addValue("lineupingStatus", game.getLineupingStatus())
+                                        .addValue("topLineup", game.getTopLineup())
+                                        .addValue("bottomLineup", game.getBottomLineup())
+                                        .addValue("id", game.getId());
 
     return jdbcTemplate.update(sql, parameters);
   }

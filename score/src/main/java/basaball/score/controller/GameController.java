@@ -8,6 +8,8 @@ import basaball.score.form.GameForm;
 import basaball.score.security.LoginTeam;
 import basaball.score.service.GameService;
 import basaball.score.service.UtilService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,12 +34,17 @@ public class GameController {
   @PostMapping("/games")
   public ResponseEntity<Object> createGame(
       @AuthenticationPrincipal LoginTeam team, @RequestBody GameForm form) throws DataNotFoundException, RegistrationException {
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    String topLineup = gson.toJson(form.getTopLineup());
+    String bottomLineup = gson.toJson(form.getBottomLineup());
     Game game = new Game();
     game.setTeamId(team.getId());
     game.setOpponentTeam(form.getOpponentTeam());
     game.setDate(form.getDate());
     game.setField(form.getField());
     game.setTopFlg(form.isTopFlg());
+    game.setTopLineup(topLineup);
+    game.setBottomLineup(bottomLineup);
     return utilService.responseFromObject(gameService.create(game));
   }
 
@@ -48,6 +55,9 @@ public class GameController {
 
   @PostMapping("games/{gameId}")
   public ResponseEntity<Object> updateGame(@AuthenticationPrincipal LoginTeam team, @RequestBody GameForm form, @PathVariable int gameId) throws UpdateException {
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    String topLineup = gson.toJson(form.getTopLineup());
+    String bottomLineup = gson.toJson(form.getBottomLineup());
     Game game = new Game();
     game.setId(gameId);
     game.setTeamId(team.getId());
@@ -60,6 +70,8 @@ public class GameController {
     game.setTopFlg(form.isTopFlg());
     game.setResultFlg(form.isResultFlg());
     game.setLineupingStatus(form.getLineupingStatus());
+    game.setTopLineup(topLineup);
+    game.setBottomLineup(bottomLineup);
     gameService.update(game);
     return utilService.response();
   }
