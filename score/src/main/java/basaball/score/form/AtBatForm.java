@@ -1,7 +1,6 @@
 package basaball.score.form;
 
 import javax.validation.constraints.Max;
-
 import lombok.Data;
 
 @Data
@@ -19,7 +18,7 @@ public class AtBatForm {
   private Integer thirdRunnerId;
   private boolean playerChangeFlg;
   private Integer direction;
-  private boolean completeFlg;
+  private Boolean completeFlg;
   private String comment;
   private Integer result;
   private int lineupNumber;

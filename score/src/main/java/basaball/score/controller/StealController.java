@@ -26,7 +26,7 @@ public class StealController {
       @AuthenticationPrincipal LoginTeam team, @RequestBody StealForm form) throws DataNotFoundException, RegistrationException {
     Steal steal = new Steal();
     steal.setEventId(form.getEventId());
-    steal.setTeamId(form.getTeamId());
+    steal.setTeamId(team.getId());
     steal.setRunnerId(form.getRunnerId());
     steal.setPitcherId(form.getPitcherId());
     steal.setCatcherId(form.getCatcherId());

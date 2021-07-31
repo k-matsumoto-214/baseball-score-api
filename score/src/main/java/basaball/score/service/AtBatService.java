@@ -39,7 +39,7 @@ public class AtBatService {
       tempMap.put("thirdRunnerId", atBat.getThirdRunnerId());
       tempMap.put("playerChangeFlg", atBat.isPlayerChangeFlg());
       tempMap.put("direction", atBat.getDirection());
-      tempMap.put("completeFlg", atBat.isCompleteFlg());
+      tempMap.put("completeFlg", atBat.getCompleteFlg());
       tempMap.put("comment", atBat.getComment());
       tempMap.put("result", atBat.getResult());
       tempMap.put("lineupNumber", atBat.getLineupNumber());

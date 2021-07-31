@@ -43,7 +43,7 @@ public class AtBatController {
     atBat.setThirdRunnerId(form.getThirdRunnerId());
     atBat.setPlayerChangeFlg(form.isPlayerChangeFlg());
     atBat.setDirection(form.getDirection());
-    atBat.setCompleteFlg(form.isCompleteFlg());
+    atBat.setCompleteFlg(form.getCompleteFlg());
     atBat.setComment(form.getComment());
     atBat.setResult(form.getResult());
     atBat.setLineupNumber(form.getLineupNumber());
@@ -67,7 +67,7 @@ public class AtBatController {
     atBat.setThirdRunnerId(form.getThirdRunnerId());
     atBat.setPlayerChangeFlg(form.isPlayerChangeFlg());
     atBat.setDirection(form.getDirection());
-    atBat.setCompleteFlg(form.isCompleteFlg());
+    atBat.setCompleteFlg(form.getCompleteFlg());
     atBat.setComment(form.getComment());
     atBat.setResult(form.getResult());
     atBat.setLineupNumber(form.getLineupNumber());

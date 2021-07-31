@@ -25,7 +25,7 @@ public class RunController {
   public ResponseEntity<Object> createRun(
       @AuthenticationPrincipal LoginTeam team, @RequestBody RunForm form) throws DataNotFoundException, RegistrationException {
     Run run = new Run();
-    run.setTeamId(form.getTeamId());
+    run.setTeamId(team.getId());
     run.setGameId(form.getGameId());
     run.setEventId(form.getEventId());
     run.setAtBatId(form.getAtBatId());
