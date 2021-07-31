@@ -20,16 +20,19 @@ public class EventsDao {
 
   public int create(Event event) {
     String sql = "insert into events values (null, :gameId, :teamId, :inning, :atBatId, "
-                 + ":resultFirstRunnerId, :resultSecondRunnerId, :resultThirdRunnerId, :resultOutCount, :timing)";
+                 + ":resultFirstRunnerId, :resultSecondRunnerId, :resultThirdRunnerId, :resultOutCount, :timing, :eventType, :comment)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", event.getTeamId())
                                         .addValue("gameId", event.getGameId())
                                         .addValue("inning", event.getInning())
+                                        .addValue("atBatId", event.getAtBatId())
                                         .addValue("resultFirstRunnerId", event.getResultFirstRunnerId())
                                         .addValue("resultSecondRunnerId", event.getResultSecondRunnerId())
                                         .addValue("resultThirdRunnerId", event.getResultThirdRunnerId())
                                         .addValue("resultOutCount", event.getResultOutCount())
-                                        .addValue("timing", event.getTiming());
+                                        .addValue("timing", event.getTiming())
+                                        .addValue("eventType", event.getEventType())
+                                        .addValue("comment", event.getComment());
 
     return jdbcTemplate.update(sql, parameters);
   }

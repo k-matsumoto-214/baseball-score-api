@@ -1,5 +1,7 @@
 package basaball.score.form;
 
+import javax.validation.constraints.Max;
+
 import lombok.Data;
 
 @Data
@@ -10,6 +12,7 @@ public class AtBatForm {
   private int batterId;
   private int pitcherId;
   private int inning;
+  @Max(2)
   private int outCount;
   private Integer firstRunnerId;
   private Integer secondRunnerId;

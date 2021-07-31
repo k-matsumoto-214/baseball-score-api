@@ -18,7 +18,7 @@ public class RunsDao {
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", run.getTeamId())
                                         .addValue("gameId", run.getGameId())
-                                        .addValue("evantId", run.getEventId())
+                                        .addValue("eventId", run.getEventId())
                                         .addValue("atBatId", run.getAtBatId())
                                         .addValue("batterId", run.getBatterId())
                                         .addValue("pitcherId", run.getPitcherId())

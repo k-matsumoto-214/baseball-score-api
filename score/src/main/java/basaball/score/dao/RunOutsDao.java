@@ -16,8 +16,8 @@ public class RunOutsDao {
     String sql = "insert into run_outs values (null, :playerId, :teamId, :eventId)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", runOut.getTeamId())
-                                        .addValue("evantId", runOut.getEventId())
-                                        .addValue("playerId", runOut.getEventId());
+                                        .addValue("eventId", runOut.getEventId())
+                                        .addValue("playerId", runOut.getPlayerId());
 
     return jdbcTemplate.update(sql, parameters);
   }

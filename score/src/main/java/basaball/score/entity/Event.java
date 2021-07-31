@@ -9,9 +9,11 @@ public class Event {
   private int teamId;
   private int inning;
   private int atBatId;
-  private int resultFirstRunnerId;
-  private int resultSecondRunnerId;
-  private int resultThirdRunnerId;
-  private int resultOutCount;
+  private Integer resultFirstRunnerId;
+  private Integer resultSecondRunnerId;
+  private Integer resultThirdRunnerId;
+  private Integer resultOutCount;
   private int timing;
+  private Integer eventType;
+  private String comment;
 }

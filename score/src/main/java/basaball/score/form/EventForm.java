@@ -1,5 +1,7 @@
 package basaball.score.form;
 
+import javax.validation.constraints.Size;
+
 import lombok.Data;
 
 @Data
@@ -9,9 +11,12 @@ public class EventForm {
   private int teamId;
   private int inning;
   private int atBatId;
-  private int resultFirstRunnerId;
-  private int resultSecondRunnerId;
-  private int resultThirdRunnerId;
+  private Integer resultFirstRunnerId;
+  private Integer resultSecondRunnerId;
+  private Integer resultThirdRunnerId;
   private int resultOutCount;
   private int timing;
+  private Integer eventType;
+  @Size(max=200)
+  private String comment;
 }

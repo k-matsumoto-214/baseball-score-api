@@ -34,6 +34,8 @@ public class EventController {
     event.setResultThirdRunnerId(form.getResultThirdRunnerId());
     event.setResultOutCount(form.getResultOutCount());
     event.setTiming(form.getTiming());
+    event.setEventType(form.getEventType());
+    event.setComment(form.getComment());
     return utilService.responseFromObject(eventService.create(event));
   }
 }
