@@ -1,7 +1,10 @@
 package basaball.score.dao;
 
 import basaball.score.entity.Run;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -28,5 +31,20 @@ public class RunsDao {
                                         .addValue("rbiFlg", run.isRbiFlg());
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<Run> findByEventId(int eventId, int teamId) {
+    String sql = "select * from runs where event_id = :eventId and team_id = :teamId";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("eventId", eventId);
+
+    RowMapper<Run> rowMapper = new BeanPropertyRowMapper<Run>(Run.class);
+
+    List<Run> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
   }
 }

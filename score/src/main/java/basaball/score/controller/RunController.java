@@ -10,6 +10,8 @@ import basaball.score.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,5 +39,10 @@ public class RunController {
     run.setRbiFlg(form.isRbiFlg());
     runService.create(run);
     return utilService.response();
+  }
+
+  @GetMapping("games/runs/{eventId}")
+  public ResponseEntity<Object> fetchRunsbyEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
+    return utilService.responseFromObject(runService.findByEventId(eventId, team.getId()));
   }
 }

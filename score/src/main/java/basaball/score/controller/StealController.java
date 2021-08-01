@@ -38,7 +38,7 @@ public class StealController {
   }
 
   @GetMapping("games/steals/{eventId}")
-  public ResponseEntity<Object> fetchEventsForGame(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
+  public ResponseEntity<Object> fetchStealsbyEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
     return utilService.responseFromObject(stealService.findByEventId(eventId, team.getId()));
   }
 }

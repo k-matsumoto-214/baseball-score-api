@@ -35,7 +35,7 @@ public class ErrorController {
   }
 
   @GetMapping("/games/errors/{eventId}")
-  public ResponseEntity<Object> fetchBatteryErrorByEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
+  public ResponseEntity<Object> fetchErrorByEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
     return utilService.responseFromObject(errorService.findByEventId(eventId, team.getId()));
   }
 }

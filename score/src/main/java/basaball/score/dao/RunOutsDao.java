@@ -1,7 +1,10 @@
 package basaball.score.dao;
 
 import basaball.score.entity.RunOut;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -20,5 +23,20 @@ public class RunOutsDao {
                                         .addValue("playerId", runOut.getPlayerId());
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<RunOut> findByEventId(int eventId, int teamId) {
+    String sql = "select * from run_outs where event_id = :eventId and team_id = :teamId";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("eventId", eventId);
+
+    RowMapper<RunOut> rowMapper = new BeanPropertyRowMapper<RunOut>(RunOut.class);
+
+    List<RunOut> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
   }
 }

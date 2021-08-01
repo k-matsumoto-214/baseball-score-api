@@ -34,7 +34,6 @@ public class StealService {
       Map<String, Object> tempMap = new LinkedHashMap<>();
       tempMap.put("id", steal.getId());
       tempMap.put("teamId", steal.getTeamId());
-      tempMap.put("teamId", steal.getTeamId());
       tempMap.put("runnerId", steal.getRunnerId());
       tempMap.put("successFlg", steal.isSuccessFlg());
 
