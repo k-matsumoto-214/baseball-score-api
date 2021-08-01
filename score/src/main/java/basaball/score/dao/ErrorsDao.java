@@ -2,6 +2,9 @@ package basaball.score.dao;
 
 import basaball.score.entity.Error;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -20,5 +23,20 @@ public class ErrorsDao {
                                         .addValue("playerId", error.getPlayerId());
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public Error findByEventId(int eventId, int teamId) {
+    String sql = "select * from errors where event_id = :eventId and team_id = :teamId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId)
+                                        .addValue("teamId", teamId);
+
+    RowMapper<Error> rowMapper = new BeanPropertyRowMapper<Error>(Error.class);
+
+    try {
+      return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
   }
 }

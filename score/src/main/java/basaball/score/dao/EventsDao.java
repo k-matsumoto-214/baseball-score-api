@@ -1,7 +1,10 @@
 package basaball.score.dao;
 
 import basaball.score.entity.Event;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -35,5 +38,20 @@ public class EventsDao {
                                         .addValue("comment", event.getComment());
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<Event> findByAtBatId(int atBatId, int teamId) {
+    String sql = "select * from events where at_bat_id = :atBatId and team_id = :teamId";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("atBatId", atBatId);
+
+    RowMapper<Event> rowMapper = new BeanPropertyRowMapper<Event>(Event.class);
+
+    List<Event> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
   }
 }

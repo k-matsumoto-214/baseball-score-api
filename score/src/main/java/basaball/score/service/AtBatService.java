@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AtBatService {
   @Autowired
   private AtBatsDao atBatsDao;
+
   public List<Map<String, Object>> findByGameId(int gameId) throws DataNotFoundException {
     List<AtBat> atBats = atBatsDao.findByGameId(gameId);
     if (atBats == null) {

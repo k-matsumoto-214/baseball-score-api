@@ -10,5 +10,5 @@ public class Steal {
   private int runnerId;
   private int pitcherId;
   private int catcherId;
-  private Boolean successFlg;
+  private boolean successFlg;
 }

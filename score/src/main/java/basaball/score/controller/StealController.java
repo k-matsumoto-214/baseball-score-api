@@ -10,6 +10,8 @@ import basaball.score.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +35,10 @@ public class StealController {
     steal.setSuccessFlg(form.getSuccessFlg());
     stealService.create(steal);
     return utilService.response();
+  }
+
+  @GetMapping("games/steals/{eventId}")
+  public ResponseEntity<Object> fetchEventsForGame(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
+    return utilService.responseFromObject(stealService.findByEventId(eventId, team.getId()));
   }
 }

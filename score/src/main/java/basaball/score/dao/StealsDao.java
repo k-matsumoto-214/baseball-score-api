@@ -1,12 +1,14 @@
 package basaball.score.dao;
 
+import basaball.score.entity.Steal;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-
-import basaball.score.entity.Steal;
 
 @Repository
 public class StealsDao {
@@ -21,8 +23,23 @@ public class StealsDao {
                                         .addValue("runnerId", steal.getRunnerId())
                                         .addValue("pitcherId", steal.getPitcherId())
                                         .addValue("catcherId", steal.getCatcherId())
-                                        .addValue("successFlg", steal.getSuccessFlg());
+                                        .addValue("successFlg", steal.isSuccessFlg());
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<Steal> findByEventId(int eventId, int teamId) {
+    String sql = "select * from steals where event_id = :eventId and team_id = :teamId";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("eventId", eventId);
+
+    RowMapper<Steal> rowMapper = new BeanPropertyRowMapper<Steal>(Steal.class);
+
+    List<Steal> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
   }
 }
