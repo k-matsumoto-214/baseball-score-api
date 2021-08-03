@@ -45,6 +45,7 @@ public class GameController {
     game.setTopFlg(form.isTopFlg());
     game.setTopLineup(topLineup);
     game.setBottomLineup(bottomLineup);
+    game.setInning(form.getInning());
     return utilService.responseFromObject(gameService.create(game));
   }
 
@@ -72,6 +73,7 @@ public class GameController {
     game.setLineupingStatus(form.getLineupingStatus());
     game.setTopLineup(topLineup);
     game.setBottomLineup(bottomLineup);
+    game.setInning(form.getInning());
     gameService.update(game);
     return utilService.response();
   }

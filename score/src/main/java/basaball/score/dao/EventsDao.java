@@ -54,4 +54,27 @@ public class EventsDao {
       return resultList;
     }
   }
+
+  public int delete(int id) {
+    String sql = "delete from events where id = :id";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("id", id);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<Event> findBattingEventByGameId(int gameId, int teamId) {
+    String sql = "select * from events where game_id = :gameId and team_id = :teamId and timing = 1";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("gameId", gameId);
+
+    RowMapper<Event> rowMapper = new BeanPropertyRowMapper<Event>(Event.class);
+
+    List<Event> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
 }

@@ -32,4 +32,5 @@ public class GameForm {
   private int lineupingStatus;
   private List<LineupForm> topLineup;
   private List<LineupForm> bottomLineup;
+  private Integer inning;
 }

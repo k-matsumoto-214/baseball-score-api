@@ -41,4 +41,12 @@ public class BatteryErrorsDao {
       return null;
     }
   }
+
+  public int deleteByEventId(int eventId) {
+    String sql = "delete from battery_errors where event_id = :eventId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
 }

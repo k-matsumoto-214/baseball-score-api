@@ -18,4 +18,5 @@ public class Game {
   private int lineupingStatus;
   private String topLineup;
   private String bottomLineup;
+  private Integer inning;
 }

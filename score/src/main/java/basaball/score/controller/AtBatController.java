@@ -75,4 +75,33 @@ public class AtBatController {
     atBatService.update(atBat);
     return utilService.response();
   }
+
+  @PostMapping("games/at-bats/{atBatId}")
+  public ResponseEntity<Object> deleteAtBat(@AuthenticationPrincipal LoginTeam team, @RequestBody AtBatForm form, @PathVariable int atBatId) throws RegistrationException, UpdateException {
+    AtBat atBat = new AtBat();
+    atBat.setId(atBatId);
+    atBat.setTeamId(team.getId());
+
+    AtBat beforeAtBat = new AtBat();
+    beforeAtBat.setId(form.getId());
+    beforeAtBat.setTeamId(team.getId());
+    beforeAtBat.setGameId(form.getGameId());
+    beforeAtBat.setBatterId(form.getBatterId());
+    beforeAtBat.setPitcherId(form.getPitcherId());
+    beforeAtBat.setInning(form.getInning());
+    beforeAtBat.setOutCount(form.getOutCount());
+    beforeAtBat.setFirstRunnerId(form.getFirstRunnerId());
+    beforeAtBat.setSecondRunnerId(form.getSecondRunnerId());
+    beforeAtBat.setThirdRunnerId(form.getThirdRunnerId());
+    beforeAtBat.setPlayerChangeFlg(form.isPlayerChangeFlg());
+    beforeAtBat.setDirection(form.getDirection());
+    beforeAtBat.setCompleteFlg(form.getCompleteFlg());
+    beforeAtBat.setComment(form.getComment());
+    beforeAtBat.setResult(form.getResult());
+    beforeAtBat.setLineupNumber(form.getLineupNumber());
+    beforeAtBat.setTopFlg(form.isTopFlg());
+
+    atBatService.deleteAtBat(beforeAtBat, atBat);
+    return utilService.response();
+  }
 }

@@ -63,7 +63,7 @@ public class GamesDao {
     String sql = "update games set opponent_team = :opponentTeam, "
                  + "top_score = :topScore, bottom_score = :bottomScore, "
                  + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :lineupingStatus, "
-                 + "top_lineup = :topLineup, bottom_lineup = :bottomLineup "
+                 + "top_lineup = :topLineup, bottom_lineup = :bottomLineup, inning = :inning "
                  + "where id = :id and team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
@@ -78,6 +78,7 @@ public class GamesDao {
                                         .addValue("lineupingStatus", game.getLineupingStatus())
                                         .addValue("topLineup", game.getTopLineup())
                                         .addValue("bottomLineup", game.getBottomLineup())
+                                        .addValue("inning", game.getInning())
                                         .addValue("id", game.getId());
 
     return jdbcTemplate.update(sql, parameters);

@@ -89,4 +89,13 @@ public class AtBatsDao {
 
     jdbcTemplate.queryForMap(sql, parameters);
   }
+
+  public int delete(int id, int teamId) {
+    String sql = "delete from at_bats where id = :id and team_id = :teamId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("id", id)
+                                        .addValue("teamId", teamId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
 }

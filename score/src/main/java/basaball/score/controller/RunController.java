@@ -45,4 +45,9 @@ public class RunController {
   public ResponseEntity<Object> fetchRunsbyEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
     return utilService.responseFromObject(runService.findByEventId(eventId, team.getId()));
   }
+
+  @GetMapping("games/result/runs/{gameId}")
+  public ResponseEntity<Object> fetchRunsbyGameId(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(runService.findByGameId(gameId, team.getId()));
+  }
 }

@@ -41,4 +41,42 @@ public class RunService {
 
     return result;
   }
+
+  public Map<String, Object> findByGameId(int gameId, int teamId) {
+    Map<String, Object> result = new LinkedHashMap<>();
+    List<Map<String, Object>> topRuns = runsDao.findByGameId(gameId, teamId, true);
+    List<Map<String, Object>> bottomRuns = runsDao.findByGameId(gameId, teamId, false);
+
+    int topScore = 0;
+    int bottomScore = 0;
+    List<Map<String, Object>> topScores = new ArrayList<>();
+    List<Map<String, Object>> bottomScores = new ArrayList<>();
+
+    if (topRuns != null) {
+      for (Map<String, Object> topRun : topRuns) {
+        Map<String, Object> tempMap = new LinkedHashMap<>();
+        topScore += Integer.parseInt(topRun.get("score").toString());
+        tempMap.put("inning", topRun.get("inning"));
+        tempMap.put("score", topRun.get("score"));
+        topScores.add(tempMap);
+      }
+    }
+
+    if (bottomRuns != null) {
+      for (Map<String, Object> bottomRun : bottomRuns) {
+        Map<String, Object> tempMap = new LinkedHashMap<>();
+        bottomScore += Integer.parseInt(bottomRun.get("score").toString());
+        tempMap.put("inning", bottomRun.get("inning"));
+        tempMap.put("score", bottomRun.get("score"));
+        bottomScores.add(tempMap);
+      }
+    }
+
+    result.put("topScore", topScore);
+    result.put("topScores", topScores);
+    result.put("bottomScore", bottomScore);
+    result.put("bottomScores", bottomScores);
+
+    return result;
+  }
 }

@@ -2,6 +2,7 @@ package basaball.score.dao;
 
 import basaball.score.entity.Run;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +18,7 @@ public class RunsDao {
 
   public int create(Run run) {
     String sql = "insert into runs values (null, :teamId, :gameId, :eventId, :atBatId, :batterId, "
-                 + ":pitcherId, :runnerId, :inning, :earnedFlg, :rbiFlg)";
+                 + ":pitcherId, :runnerId, :inning, :earnedFlg, :rbiFlg, :topFlg)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", run.getTeamId())
                                         .addValue("gameId", run.getGameId())
@@ -28,7 +29,8 @@ public class RunsDao {
                                         .addValue("runnerId", run.getRunnerId())
                                         .addValue("inning", run.getInning())
                                         .addValue("earnedFlg", run.isEarndFlg())
-                                        .addValue("rbiFlg", run.isRbiFlg());
+                                        .addValue("rbiFlg", run.isRbiFlg())
+                                        .addValue("topFlg", run.isTopFlg());
 
     return jdbcTemplate.update(sql, parameters);
   }
@@ -41,6 +43,28 @@ public class RunsDao {
     RowMapper<Run> rowMapper = new BeanPropertyRowMapper<Run>(Run.class);
 
     List<Run> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
+
+  public int deleteByEventId(int eventId) {
+    String sql = "delete from runs where event_id = :eventId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
+
+  public List<Map<String, Object>> findByGameId(int gameId, int teamId, boolean topFlg) {
+    String sql = "select inning, count(*) as score from runs where game_id = :gameId and team_id = :teamId and top_flg = :topFlg group by inning";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("gameId", gameId)
+                                        .addValue("topFlg", topFlg);
+
+    List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, parameters);
     if (resultList.size() == 0) {
       return null;
     } else {

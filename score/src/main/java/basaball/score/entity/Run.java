@@ -15,4 +15,5 @@ public class Run {
   private int inning;
   private boolean earndFlg;
   private boolean rbiFlg;
+  private boolean topFlg;
 }

@@ -42,4 +42,12 @@ public class StealsDao {
       return resultList;
     }
   }
+
+  public int deleteByEventId(int eventId) {
+    String sql = "delete from steals where event_id = :eventId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
 }
