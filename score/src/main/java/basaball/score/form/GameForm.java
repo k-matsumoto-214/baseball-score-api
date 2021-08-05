@@ -33,4 +33,8 @@ public class GameForm {
   private List<LineupForm> topLineup;
   private List<LineupForm> bottomLineup;
   private Integer inning;
+  private Integer winningPitcher;
+  private Integer losingPitcher;
+  private Integer savePitcher;
+  private String comment;
 }

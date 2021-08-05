@@ -37,6 +37,7 @@ public class RunController {
     run.setInning(form.getInning());
     run.setEarndFlg(form.isEarndFlg());
     run.setRbiFlg(form.isRbiFlg());
+    run.setTopFlg(form.isTopFlg());
     runService.create(run);
     return utilService.response();
   }

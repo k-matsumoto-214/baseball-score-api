@@ -71,4 +71,34 @@ public class RunsDao {
       return resultList;
     }
   }
+
+  public List<Run> findByBatterIdAndGameId(int batterId, int gameId) {
+    String sql = "select * from runs where batter_id = :batterId and game_id = :gameId";
+    SqlParameterSource parameters = new MapSqlParameterSource("batterId", batterId)
+                                        .addValue("gameId", gameId);
+
+    RowMapper<Run> rowMapper = new BeanPropertyRowMapper<Run>(Run.class);
+
+    List<Run> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
+
+  public List<Run> findByRunnerIdAndGameId(int runnerId, int gameId) {
+    String sql = "select * from runs where runner_id = :runnerId and game_id = :gameId";
+    SqlParameterSource parameters = new MapSqlParameterSource("runnerId", runnerId)
+                                        .addValue("gameId", gameId);
+
+    RowMapper<Run> rowMapper = new BeanPropertyRowMapper<Run>(Run.class);
+
+    List<Run> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
 }

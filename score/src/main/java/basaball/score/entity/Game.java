@@ -19,4 +19,8 @@ public class Game {
   private String topLineup;
   private String bottomLineup;
   private Integer inning;
+  private Integer winningPitcher;
+  private Integer losingPitcher;
+  private Integer savePitcher;
+  private String comment;
 }

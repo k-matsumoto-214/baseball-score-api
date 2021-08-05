@@ -50,4 +50,19 @@ public class StealsDao {
 
     return jdbcTemplate.update(sql, parameters);
   }
+
+  public List<Steal> findByRunnerIdAndEventId(int runnerId, int eventId) {
+    String sql = "select * from steals where runner_id = :runnerId and event_id = :eventId";
+    SqlParameterSource parameters = new MapSqlParameterSource("runnerId", runnerId)
+                                        .addValue("eventId", eventId);
+
+    RowMapper<Steal> rowMapper = new BeanPropertyRowMapper<Steal>(Steal.class);
+
+    List<Steal> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
 }

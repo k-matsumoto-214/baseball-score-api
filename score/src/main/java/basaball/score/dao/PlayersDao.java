@@ -31,10 +31,24 @@ public class PlayersDao {
   }
 
   public Player findById(int playerId, int teamId) {
-    String sql = "select * from players where id = :playerId and team_id = :teamId and delete_flg = false";
+    String sql = "select * from players where id = :playerId and team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId)
                                         .addValue("teamId", teamId);
+
+    RowMapper<Player> rowMapper = new BeanPropertyRowMapper<Player>(Player.class);
+
+    try {
+      return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
+  }
+
+  public Player findByIdOnly(int playerId) {
+    String sql = "select * from players where id = :playerId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("playerId", playerId);
 
     RowMapper<Player> rowMapper = new BeanPropertyRowMapper<Player>(Player.class);
 

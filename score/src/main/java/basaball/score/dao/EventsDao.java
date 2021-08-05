@@ -77,4 +77,19 @@ public class EventsDao {
       return resultList;
     }
   }
+
+  public List<Event> findByGameId(int gameId, int teamId) {
+    String sql = "select * from events where game_id = :gameId and team_id = :teamId";
+    SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId)
+                                        .addValue("gameId", gameId);
+
+    RowMapper<Event> rowMapper = new BeanPropertyRowMapper<Event>(Event.class);
+
+    List<Event> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
 }

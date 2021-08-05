@@ -3,6 +3,7 @@ package basaball.score.dao;
 import basaball.score.entity.AtBat;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -97,5 +98,18 @@ public class AtBatsDao {
                                         .addValue("teamId", teamId);
 
     return jdbcTemplate.update(sql, parameters);
+  }
+
+  public AtBat findById(int atBatId) {
+    String sql = "select * from at_bats where id = :atBatId";
+    SqlParameterSource parameters = new MapSqlParameterSource("atBatId", atBatId);
+
+    RowMapper<AtBat> rowMapper = new BeanPropertyRowMapper<AtBat>(AtBat.class);
+
+    try {
+      return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
   }
 }
