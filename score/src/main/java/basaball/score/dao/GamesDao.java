@@ -23,7 +23,7 @@ public class GamesDao {
   }
 
   public int create(Game game) {
-    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0, :topLineup, :bottomLineup, null, null, null, null)";
+    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0, :topLineup, :bottomLineup, null, null, null, null, comment)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
                                         .addValue("opponentTeam", game.getOpponentTeam())
