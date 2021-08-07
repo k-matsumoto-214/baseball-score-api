@@ -37,6 +37,7 @@ public class RunController {
     run.setInning(form.getInning());
     run.setEarndFlg(form.isEarndFlg());
     run.setRbiFlg(form.isRbiFlg());
+    run.setTopFlg(form.isTopFlg());
     runService.create(run);
     return utilService.response();
   }
@@ -44,5 +45,10 @@ public class RunController {
   @GetMapping("games/runs/{eventId}")
   public ResponseEntity<Object> fetchRunsbyEventId(@AuthenticationPrincipal LoginTeam team, @PathVariable int eventId) throws DataNotFoundException {
     return utilService.responseFromObject(runService.findByEventId(eventId, team.getId()));
+  }
+
+  @GetMapping("games/result/runs/{gameId}")
+  public ResponseEntity<Object> fetchRunsbyGameId(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(runService.findByGameId(gameId, team.getId()));
   }
 }

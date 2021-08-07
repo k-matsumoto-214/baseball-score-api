@@ -72,7 +72,27 @@ public class GameController {
     game.setLineupingStatus(form.getLineupingStatus());
     game.setTopLineup(topLineup);
     game.setBottomLineup(bottomLineup);
+    game.setInning(form.getInning());
+    game.setWinningPitcher(form.getWinningPitcher());
+    game.setLosingPitcher(form.getLosingPitcher());
+    game.setSavePitcher(form.getSavePitcher());
+    game.setComment(form.getComment());
     gameService.update(game);
     return utilService.response();
+  }
+
+  @GetMapping("/games/scores/{gameId}")
+  public ResponseEntity<Object> fetchGameScores(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(gameService.getScores(gameId, team.getId()));
+  }
+
+  @GetMapping("/games/process/{gameId}")
+  public ResponseEntity<Object> fetchGameProcess(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(gameService.getProcess(gameId, team.getId()));
+  }
+
+  @GetMapping("/games/stats/{gameId}")
+  public ResponseEntity<Object> fetchGameStats(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(gameService.getStats(gameId, team.getId()));
   }
 }

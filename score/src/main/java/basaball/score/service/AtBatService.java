@@ -4,7 +4,15 @@ import basaball.score.controller.exception.DataNotFoundException;
 import basaball.score.controller.exception.RegistrationException;
 import basaball.score.controller.exception.UpdateException;
 import basaball.score.dao.AtBatsDao;
+import basaball.score.dao.BatteryErrorsDao;
+import basaball.score.dao.ErrorsDao;
+import basaball.score.dao.EventsDao;
+import basaball.score.dao.RunOutsDao;
+import basaball.score.dao.RunsDao;
+import basaball.score.dao.SpecialsDao;
+import basaball.score.dao.StealsDao;
 import basaball.score.entity.AtBat;
+import basaball.score.entity.Event;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +25,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AtBatService {
   @Autowired
   private AtBatsDao atBatsDao;
+  @Autowired
+  private RunsDao runsDao;
+  @Autowired
+  private RunOutsDao runOutsDao;
+  @Autowired
+  private EventsDao eventsDao;
+  @Autowired
+  private BatteryErrorsDao batteryErrorsDao;
+  @Autowired
+  private ErrorsDao errorsDao;
+  @Autowired
+  private StealsDao stealsDao;
+  @Autowired
+  private SpecialsDao specialsDao;
 
   public List<Map<String, Object>> findByGameId(int gameId) throws DataNotFoundException {
     List<AtBat> atBats = atBatsDao.findByGameId(gameId);
@@ -62,6 +84,93 @@ public class AtBatService {
     atBatsDao.selectForUpdate(atBat.getId());
     if (atBatsDao.update(atBat) != 1) {
       throw new UpdateException("打席更新に失敗しました。");
+    }
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  public void deleteAtBat(AtBat beforeAtBat, AtBat atBat) throws UpdateException {
+    List<Event> beforeEvents = eventsDao.findByAtBatId(beforeAtBat.getId(), beforeAtBat.getTeamId());
+    if (beforeEvents != null) {
+      for (Event event : beforeEvents) {
+        try {
+          if (event.getEventType() != null) {
+            switch (event.getEventType()) {
+              case 0:
+                stealsDao.deleteByEventId(event.getId());
+                break;
+              case 1:
+                batteryErrorsDao.deleteByEventId(event.getId());
+                break;
+              case 2:
+                errorsDao.deleteByEventId(event.getId());
+                break;
+              case 3:
+                specialsDao.deleteByEventId(event.getId());
+                break;
+            }
+          }
+          runsDao.deleteByEventId(event.getId());
+          runOutsDao.deleteByEventId(event.getId());
+          eventsDao.delete(event.getId());
+        } catch (Exception e) {
+          e.printStackTrace();
+          throw new UpdateException("イベントID：" + event.getId() + "の処理中にエラーが発生しました。");
+        }
+      }
+    }
+
+    List<Event> allBattingEvents = eventsDao.findBattingEventByGameId(beforeAtBat.getGameId(), beforeAtBat.getTeamId());
+    if (allBattingEvents != null) {
+      Event beforeBeforeEvent = allBattingEvents.get(allBattingEvents.size() - 1);
+      if (beforeBeforeEvent.getResultOutCount() != 3) {
+        beforeAtBat.setFirstRunnerId(beforeBeforeEvent.getResultFirstRunnerId());
+        beforeAtBat.setSecondRunnerId(beforeBeforeEvent.getResultSecondRunnerId());
+        beforeAtBat.setThirdRunnerId(beforeBeforeEvent.getResultThirdRunnerId());
+      } else {
+        beforeAtBat.setFirstRunnerId(null);
+        beforeAtBat.setSecondRunnerId(null);
+        beforeAtBat.setThirdRunnerId(null);
+      }
+    } else {
+      beforeAtBat.setFirstRunnerId(null);
+      beforeAtBat.setSecondRunnerId(null);
+      beforeAtBat.setThirdRunnerId(null);
+    }
+
+    atBatsDao.selectForUpdate(beforeAtBat.getId());
+    if (atBatsDao.update(beforeAtBat) != 1) {
+      throw new UpdateException("前打席の初期化更新に失敗しました。");
+    }
+
+    List<Event> events = eventsDao.findByAtBatId(atBat.getId(), atBat.getTeamId());
+    if (events != null) {
+      for (Event event : events) {
+        try {
+          switch (event.getEventType()) {
+            case 0:
+              stealsDao.deleteByEventId(event.getId());
+              break;
+            case 1:
+              batteryErrorsDao.deleteByEventId(event.getId());
+              break;
+            case 2:
+              errorsDao.deleteByEventId(event.getId());
+              break;
+            case 3:
+              specialsDao.deleteByEventId(event.getId());
+              break;
+          }
+          runsDao.deleteByEventId(event.getId());
+          runOutsDao.deleteByEventId(event.getId());
+          eventsDao.delete(event.getId());
+        } catch (Exception e) {
+          throw new UpdateException("イベントID：" + event.getId() + "の処理中にエラーが発生しました。");
+        }
+      }
+    }
+
+    if (atBatsDao.delete(atBat.getId(), atBat.getTeamId()) != 1) {
+      throw new UpdateException("現打席の削除に失敗しました。");
     }
   }
 }

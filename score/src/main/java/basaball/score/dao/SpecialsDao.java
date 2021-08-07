@@ -38,4 +38,12 @@ public class SpecialsDao {
       return null;
     }
   }
+
+  public int deleteByEventId(int eventId) {
+    String sql = "delete from specials where event_id = :eventId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
 }

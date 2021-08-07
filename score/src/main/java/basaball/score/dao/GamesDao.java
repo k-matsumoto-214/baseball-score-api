@@ -23,7 +23,7 @@ public class GamesDao {
   }
 
   public int create(Game game) {
-    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0, :topLineup, :bottomLineup)";
+    String sql = "insert into games values (null, :teamId, :opponentTeam, null, null, :date, :field, null, :topFlg, false, 0, :topLineup, :bottomLineup, null, null, null, null, comment)";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
                                         .addValue("opponentTeam", game.getOpponentTeam())
@@ -63,7 +63,8 @@ public class GamesDao {
     String sql = "update games set opponent_team = :opponentTeam, "
                  + "top_score = :topScore, bottom_score = :bottomScore, "
                  + "date = :date, field = :field, result = :result, top_flg = :topFlg, result_flg = :resultFlg, lineuping_status = :lineupingStatus, "
-                 + "top_lineup = :topLineup, bottom_lineup = :bottomLineup "
+                 + "top_lineup = :topLineup, bottom_lineup = :bottomLineup, inning = :inning, "
+                 + "winning_pitcher = :winningPitcher, losing_pitcher = :losingPitcher, save_pitcher = :savePitcher, comment = :comment "
                  + "where id = :id and team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", game.getTeamId())
@@ -78,6 +79,11 @@ public class GamesDao {
                                         .addValue("lineupingStatus", game.getLineupingStatus())
                                         .addValue("topLineup", game.getTopLineup())
                                         .addValue("bottomLineup", game.getBottomLineup())
+                                        .addValue("inning", game.getInning())
+                                        .addValue("winningPitcher", game.getWinningPitcher())
+                                        .addValue("losingPitcher", game.getLosingPitcher())
+                                        .addValue("savePitcher", game.getSavePitcher())
+                                        .addValue("comment", game.getComment())
                                         .addValue("id", game.getId());
 
     return jdbcTemplate.update(sql, parameters);
