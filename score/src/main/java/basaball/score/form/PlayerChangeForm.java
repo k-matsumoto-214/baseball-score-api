@@ -16,4 +16,5 @@ public class PlayerChangeForm {
   @Min(0)
   @Max(3)
   private int afterField;
+  private int eventId;
 }

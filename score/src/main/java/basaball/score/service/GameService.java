@@ -8,6 +8,7 @@ import basaball.score.dao.BatteryErrorsDao;
 import basaball.score.dao.ErrorsDao;
 import basaball.score.dao.EventsDao;
 import basaball.score.dao.GamesDao;
+import basaball.score.dao.PlayerChangeDao;
 import basaball.score.dao.PlayersDao;
 import basaball.score.dao.RunOutsDao;
 import basaball.score.dao.RunsDao;
@@ -19,6 +20,7 @@ import basaball.score.entity.Error;
 import basaball.score.entity.Event;
 import basaball.score.entity.Game;
 import basaball.score.entity.Player;
+import basaball.score.entity.PlayerChange;
 import basaball.score.entity.Run;
 import basaball.score.entity.RunOut;
 import basaball.score.entity.Steal;
@@ -58,6 +60,8 @@ public class GameService {
   private PlayersDao playersDao;
   @Autowired
   private TeamsDao teamsDao;
+  @Autowired
+  private PlayerChangeDao playerChangeDao;
 
   public Map<String, Object> create(Game game) throws RegistrationException {
     if (gamesDao.create(game) != 1) {
@@ -140,7 +144,7 @@ public class GameService {
     }
   }
 
-  public Map<String, Object> getScores(int gameId, int teamId) {
+  public Map<String, Object> getScores(int gameId, int teamId) throws DataNotFoundException {
     Map<String, Object> result = new LinkedHashMap<>();
     Map<String, Object> runs = runService.findByGameId(gameId, teamId);
     List<AtBat> atBats = atBatsDao.findByGameId(gameId);
@@ -161,13 +165,15 @@ public class GameService {
     int topError = 0;
     int bottomError = 0;
     List<Event> events = eventsDao.findByGameId(gameId, teamId);
-    for (Event event : events) {
-      if (event.getEventType() != null && (event.getEventType() == 1 || event.getEventType() == 2)) {
-        AtBat atBat = atBatsDao.findById(event.getAtBatId());
-        if (atBat.isTopFlg()) {
-          topError++;
-        } else {
-          bottomError++;
+    if (events != null) {
+      for (Event event : events) {
+        if (event.getEventType() != null && (event.getEventType() == 1 || event.getEventType() == 2)) {
+          AtBat atBat = atBatsDao.findById(event.getAtBatId());
+          if (atBat.isTopFlg()) {
+            topError++;
+          } else {
+            bottomError++;
+          }
         }
       }
     }
@@ -244,6 +250,33 @@ public class GameService {
           if (event.getEventType() != null && event.getEventType() == 3) {
             beforeBattingEvents.add("特殊プレー");
           }
+          if (event.getEventType() != null && event.getEventType() == 4) {
+            List<PlayerChange> playerChanges = playerChangeDao.findByEventId(event.getId(), teamId);
+            for (PlayerChange playerChange : playerChanges) {
+              Player inPlayer = playersDao.findByIdOnly(playerChange.getInPlayerId());
+              Player outPlayer = playersDao.findByIdOnly(playerChange.getOutPlayerId());
+              if (inPlayer.getId() == outPlayer.getId()) {
+                if (playerChange.getChangeStatus() == 0) {
+                  beforeBattingEvents.add("投手交代 " + outPlayer.getName() + " " + this.formatField(playerChange.getBeforeField()) +
+                                          " ⇒ " + this.formatField(playerChange.getAfterField()));
+                } else if (playerChange.getChangeStatus() == 1) {
+                  beforeBattingEvents.add("守備交代 " + outPlayer.getName() + " " + this.formatField(playerChange.getBeforeField()) +
+                                          " ⇒ " + this.formatField(playerChange.getAfterField()));
+                }
+              } else {
+                if (playerChange.getChangeStatus() == 0) {
+                  beforeBattingEvents.add("投手交代 " + outPlayer.getName() + " ⇒ " + inPlayer.getName());
+                } else if (playerChange.getChangeStatus() == 1) {
+                  beforeBattingEvents.add("守備交代 " + outPlayer.getName() + " " + this.formatField(playerChange.getBeforeField()) +
+                                          " ⇒ " + inPlayer.getName() + " " + this.formatField(playerChange.getAfterField()));
+                } else if (playerChange.getChangeStatus() == 2) {
+                  beforeBattingEvents.add("代打 " + outPlayer.getName() + " ⇒ " + inPlayer.getName());
+                } else if (playerChange.getChangeStatus() == 3) {
+                  beforeBattingEvents.add("代走 " + outPlayer.getName() + " ⇒ " + inPlayer.getName());
+                }
+              }
+            }
+          }
           if (event.getEventType() == null && event.getTiming() == 1) {
             if (atBat.getResult() == 7 && runsDao.findByEventId(event.getId(), teamId) != null) {
               batterProcess.put("battingResult", this.formatBattingResult(atBat).replace("送りバント", "スクイズ"));
@@ -300,6 +333,12 @@ public class GameService {
       }
       batterProcesses.add(batterProcess);
 
+      if (atBat.getId() == atBats.get(atBats.size() - 2).getId()) {
+        if (game.isResultFlg()) { // 試合が終了していれば最終行に挿入
+          afterBattingEvents.add("試合終了");
+        }
+      }
+
       if (atBat.getId() == atBats.get(atBats.size() - 1).getId()) {
         inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表 " : "裏 ") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
         batterProcesses.remove(batterProcesses.size() - 1);
@@ -310,7 +349,7 @@ public class GameService {
     return result;
   }
 
-  public String formatRunner(Event event) {
+  private String formatRunner(Event event) {
     if (event.getResultFirstRunnerId() != null && event.getResultSecondRunnerId() != null && event.getResultThirdRunnerId() != null) {
       return " 満塁";
     }
@@ -335,7 +374,7 @@ public class GameService {
     return " 走者なし";
   }
 
-  public String formatBattingResult(AtBat atBat) {
+  private String formatBattingResult(AtBat atBat) {
     String direction = "";
     if (atBat.getDirection() != null) {
       if (atBat.getDirection() == 1) {
@@ -410,7 +449,7 @@ public class GameService {
     return "";
   }
 
-  public String formatOutCount(Event event) {
+  private String formatOutCount(Event event) {
     if (event.getResultOutCount() == 0) {
       return "無死";
     }
@@ -547,5 +586,31 @@ public class GameService {
       }
     }
     return result;
+  }
+
+  private String formatField(int fieldNumber) {
+    String field = "";
+    if (fieldNumber == 1) {
+      field = "投";
+    } else if (fieldNumber == 2) {
+      field = "捕";
+    } else if (fieldNumber == 3) {
+      field = "一";
+    } else if (fieldNumber == 4) {
+      field = "二";
+    } else if (fieldNumber == 5) {
+      field = "三";
+    } else if (fieldNumber == 6) {
+      field = "遊";
+    } else if (fieldNumber == 7) {
+      field = "左";
+    } else if (fieldNumber == 8) {
+      field = "中";
+    } else if (fieldNumber == 9) {
+      field = "右";
+    } else {
+      field = "指";
+    }
+    return field;
   }
 }

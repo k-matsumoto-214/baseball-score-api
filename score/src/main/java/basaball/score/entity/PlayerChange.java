@@ -13,4 +13,5 @@ public class PlayerChange {
   private int changeStatus;
   private int beforeField;
   private int afterField;
+  private int eventId;
 }
