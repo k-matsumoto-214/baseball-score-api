@@ -6,7 +6,7 @@
 <h3>password: password</h3>
 ==================================
 <br>
-フロント　⇒　https://github.com/keisuke-nao-baseball/baseball-score/blob/master/README.md
+フロント　⇒　https://github.com/keisuke-nao-baseball/baseball-score
 <br>
 <br>
 <p>野球のスコアを速報形式で記録します。(スマホ向け）</p>
