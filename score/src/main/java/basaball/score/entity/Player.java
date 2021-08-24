@@ -13,4 +13,5 @@ public class Player {
   private String position;
   private String image;
   private String comment;
+  private boolean deleteFlg;
 }
