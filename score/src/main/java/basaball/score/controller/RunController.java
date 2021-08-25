@@ -35,7 +35,7 @@ public class RunController {
     run.setPitcherId(form.getPitcherId());
     run.setRunnerId(form.getRunnerId());
     run.setInning(form.getInning());
-    run.setEarndFlg(form.isEarndFlg());
+    run.setEarnedFlg(form.isEarnedFlg());
     run.setRbiFlg(form.isRbiFlg());
     run.setTopFlg(form.isTopFlg());
     runService.create(run);

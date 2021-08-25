@@ -203,13 +203,14 @@ public class GameService {
     boolean topFlg = true;
     int topScore = 0;
     int bottomScore = 0;
+    String situation = "無死 走者なし";
 
     Map<String, Object> inningProcess = new LinkedHashMap<>();
     List<Map<String, Object>> batterProcesses = new ArrayList<>();
 
     for (AtBat atBat : atBats) {
       if ((inning != atBat.getInning()) || (topFlg != atBat.isTopFlg())) {
-        inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表 " : "裏 ") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
+        inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表　" : "裏　") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
         inningProcess.put("batterProcesses", batterProcesses);
         result.add(inningProcess);
         inningProcess = new LinkedHashMap<>(); // イニングの変わり目でイニング経過を初期化
@@ -224,6 +225,7 @@ public class GameService {
 
       Player batter = playersDao.findByIdOnly(atBat.getBatterId());
       batterProcess.put("batter", atBat.getLineupNumber() + "番 " + batter.getName());
+      batterProcess.put("situation", situation);
 
       List<Event> events = eventsDao.findByAtBatId(atBat.getId(), teamId);
       if (events != null) {
@@ -288,6 +290,9 @@ public class GameService {
             } else {
               batterProcess.put("battingResult", this.formatBattingResult(atBat));
             }
+            if (atBat.getComment() != null) {
+              batterProcess.put("battingResultComment", atBat.getComment());
+            }
           }
           List<Run> runs = runsDao.findByEventId(event.getId(), teamId);
           if (runs != null) {
@@ -319,32 +324,42 @@ public class GameService {
               }
             }
           }
-          if (event.getResultOutCount() != 3 && !game.isResultFlg()) {
+          if (event.getResultOutCount() != 3) {
             if (event.getTiming() == 0) {
-              beforeBattingEvents.add(this.formatOutCount(event) + this.formatRunner(event));
-            } else if (event.getTiming() == 1 && !game.isResultFlg()) {
-              afterBattingEvents.add(this.formatOutCount(event) + this.formatRunner(event));
+              beforeBattingEvents.add(this.formatOutCount(event) + " " + this.formatRunner(event));
+            } else if (event.getTiming() == 1) {
+              afterBattingEvents.add(this.formatOutCount(event) + " " + this.formatRunner(event));
+              situation = this.formatOutCount(event) + " " + this.formatRunner(event);
             }
           } else {
-            if (event.getTiming() == 0 && !game.isResultFlg()) {
-              beforeBattingEvents.add("スリーアウト チェンジ");
-            } else if (event.getTiming() == 1 && !game.isResultFlg()) {
-              afterBattingEvents.add("スリーアウト チェンジ");
+            if (atBat.getId() != atBats.get(atBats.size() - 2).getId()) {
+              if (event.getTiming() == 0) {
+                beforeBattingEvents.add("スリーアウト チェンジ");
+              } else if (event.getTiming() == 1) {
+                afterBattingEvents.add("スリーアウト チェンジ");
+              }
+            } else if (!game.isResultFlg()) {
+              if (event.getTiming() == 0) {
+                beforeBattingEvents.add("スリーアウト チェンジ");
+              } else if (event.getTiming() == 1) {
+                afterBattingEvents.add("スリーアウト チェンジ");
+              }
             }
+            situation = "無死 走者なし";
           }
         }
+        if (atBat.getId() == atBats.get(atBats.size() - 2).getId() && game.isResultFlg()) {
+          // 試合が終了していれば最終行に挿入
+          afterBattingEvents.add("試合終了");
+        }
+
         batterProcess.put("afterBattingEvents", afterBattingEvents);
         batterProcess.put("beforeBattingEvents", beforeBattingEvents);
       }
       batterProcesses.add(batterProcess);
 
-      if (atBat.getId() == atBats.get(atBats.size() - 2).getId() && game.isResultFlg()) {
-        // 試合が終了していれば最終行に挿入
-        afterBattingEvents.add("試合終了");
-      }
-
       if (atBat.getId() == atBats.get(atBats.size() - 1).getId() && !game.isResultFlg()) {
-        inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表 " : "裏 ") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
+        inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表　" : "裏　") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
         batterProcesses.remove(batterProcesses.size() - 1);
         inningProcess.put("batterProcesses", batterProcesses);
         result.add(inningProcess);
@@ -667,6 +682,16 @@ public class GameService {
                     }
                   }
                 }
+              }
+            }
+          }
+
+          List<Run> runs = runsDao.findByPitcherIdAndGameId(playerId, gameId);
+          if (runs != null) {
+            for (Run run : runs) {
+              r++;
+              if (run.isEarnedFlg()) {
+                er++;
               }
             }
           }
