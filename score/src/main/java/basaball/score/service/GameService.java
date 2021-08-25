@@ -314,16 +314,16 @@ public class GameService {
               }
             }
           }
-          if (event.getResultOutCount() != 3) {
+          if (event.getResultOutCount() != 3 && !game.isResultFlg()) {
             if (event.getTiming() == 0) {
               beforeBattingEvents.add(this.formatOutCount(event) + this.formatRunner(event));
-            } else if (event.getTiming() == 1) {
+            } else if (event.getTiming() == 1 && !game.isResultFlg()) {
               afterBattingEvents.add(this.formatOutCount(event) + this.formatRunner(event));
             }
           } else {
-            if (event.getTiming() == 0) {
+            if (event.getTiming() == 0 && !game.isResultFlg()) {
               beforeBattingEvents.add("スリーアウト チェンジ");
-            } else if (event.getTiming() == 1) {
+            } else if (event.getTiming() == 1 && !game.isResultFlg()) {
               afterBattingEvents.add("スリーアウト チェンジ");
             }
           }
@@ -333,13 +333,12 @@ public class GameService {
       }
       batterProcesses.add(batterProcess);
 
-      if (atBat.getId() == atBats.get(atBats.size() - 2).getId()) {
-        if (game.isResultFlg()) { // 試合が終了していれば最終行に挿入
-          afterBattingEvents.add("試合終了");
-        }
+      if (atBat.getId() == atBats.get(atBats.size() - 2).getId() && game.isResultFlg()) {
+        // 試合が終了していれば最終行に挿入
+        afterBattingEvents.add("試合終了");
       }
 
-      if (atBat.getId() == atBats.get(atBats.size() - 1).getId()) {
+      if (atBat.getId() == atBats.get(atBats.size() - 1).getId() && !game.isResultFlg()) {
         inningProcess.put("inningInfo", (inning + "回" + (topFlg ? "表 " : "裏 ") + (topFlg ? topTeam : bottomTeam) + "の攻撃"));
         batterProcesses.remove(batterProcesses.size() - 1);
         inningProcess.put("batterProcesses", batterProcesses);
