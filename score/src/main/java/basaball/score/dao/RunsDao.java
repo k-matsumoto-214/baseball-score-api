@@ -28,7 +28,7 @@ public class RunsDao {
                                         .addValue("pitcherId", run.getPitcherId())
                                         .addValue("runnerId", run.getRunnerId())
                                         .addValue("inning", run.getInning())
-                                        .addValue("earnedFlg", run.isEarndFlg())
+                                        .addValue("earnedFlg", run.isEarnedFlg())
                                         .addValue("rbiFlg", run.isRbiFlg())
                                         .addValue("topFlg", run.isTopFlg());
 

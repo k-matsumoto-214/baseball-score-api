@@ -671,6 +671,16 @@ public class GameService {
             }
           }
 
+          List<Run> runs = runsDao.findByPitcherIdAndGameId(playerId, gameId);
+          if (runs != null) {
+            for (Run run : runs) {
+              r++;
+              if (run.isEarnedFlg()) {
+                er++;
+              }
+            }
+          }
+
           tempMap.put("name", player.getName());
           tempMap.put("inning", this.formatOutCount(gotOuts));
           tempMap.put("er", er);

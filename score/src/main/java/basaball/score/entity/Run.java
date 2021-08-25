@@ -13,7 +13,7 @@ public class Run {
   private int pitcherId;
   private int runnerId;
   private int inning;
-  private boolean earndFlg;
+  private boolean earnedFlg;
   private boolean rbiFlg;
   private boolean topFlg;
 }
