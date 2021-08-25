@@ -290,6 +290,9 @@ public class GameService {
             } else {
               batterProcess.put("battingResult", this.formatBattingResult(atBat));
             }
+            if (atBat.getComment() != null) {
+              batterProcess.put("battingResultComment", atBat.getComment());
+            }
           }
           List<Run> runs = runsDao.findByEventId(event.getId(), teamId);
           if (runs != null) {
