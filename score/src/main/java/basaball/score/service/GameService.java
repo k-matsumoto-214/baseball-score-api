@@ -149,21 +149,26 @@ public class GameService {
     Map<String, Object> runs = runService.findByGameId(gameId, teamId);
     List<AtBat> atBats = atBatsDao.findByGameId(gameId);
 
+    int topError = 0;
+    int bottomError = 0;
     int topHit = 0;
+    int bottomHit = 0;
+
     for (AtBat atBat : atBats) {
       if ((atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 2 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
         topHit++;
       }
-    }
-    int bottomHit = 0;
-    for (AtBat atBat : atBats) {
+      if ((atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 6 || atBat.getResult() == 10)) {
+        bottomError++;
+      }
       if ((!atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 2 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
         bottomHit++;
       }
+      if ((!atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 6 || atBat.getResult() == 10)) {
+        topError++;
+      }
     }
 
-    int topError = 0;
-    int bottomError = 0;
     List<Event> events = eventsDao.findByGameId(gameId, teamId);
     if (events != null) {
       for (Event event : events) {
@@ -461,28 +466,28 @@ public class GameService {
     return "";
   }
 
-  public List<Map<String, Object>> getStats(int gameId, int teamId) {
+  public List<Map<String, Object>> getStatsForBatter(int gameId, int teamId) {
     Game game = gamesDao.findById(gameId, teamId);
     JsonArray lineups = game.isTopFlg()
                             ? JsonParser.parseString(game.getTopLineup()).getAsJsonArray()
                             : JsonParser.parseString(game.getBottomLineup()).getAsJsonArray();
 
     List<Map<String, Object>> result = new ArrayList<>();
-    List<Integer> registerdPlyaers = new ArrayList<>();
+    List<Integer> registerdPlayers = new ArrayList<>();
     for (JsonElement lineup : lineups) {
       JsonArray orderDetails = lineup.getAsJsonObject().get("orderDetails").getAsJsonArray();
       for (JsonElement playerInfo : orderDetails) {
         int playerId = playerInfo.getAsJsonObject().get("playerId").getAsInt();
-        if (!registerdPlyaers.contains(playerId)) {
-          registerdPlyaers.add(playerId);
+        if (!registerdPlayers.contains(playerId)) {
+          registerdPlayers.add(playerId);
           Map<String, Object> tempMap = new LinkedHashMap<>();
           Player player = playersDao.findByIdOnly(playerId);
-          List<AtBat> plyaerAtBats = new ArrayList<>();
+          List<AtBat> playerAtBats = new ArrayList<>();
           List<AtBat> atBats = atBatsDao.findByGameId(gameId);
           if (atBats != null) {
             for (AtBat atBat : atBats) {
               if (atBat.getBatterId() == playerId) {
-                plyaerAtBats.add(atBat);
+                playerAtBats.add(atBat);
               }
             }
           }
@@ -499,8 +504,8 @@ public class GameService {
           int rbi = 0;
           int score = 0;
 
-          if (plyaerAtBats != null) {
-            for (AtBat atBat : plyaerAtBats) {
+          if (playerAtBats != null) {
+            for (AtBat atBat : playerAtBats) {
               if (atBat.getCompleteFlg() != null && atBat.getCompleteFlg()) {
                 appear++;
                 switch (atBat.getResult()) {
@@ -566,8 +571,6 @@ public class GameService {
             }
           }
           tempMap.put("name", player.getName());
-          tempMap.put("score", score);
-          tempMap.put("score", appear);
           tempMap.put("rbi", rbi);
           tempMap.put("k", k);
           tempMap.put("hit", hit);
@@ -584,6 +587,109 @@ public class GameService {
         }
       }
     }
+    return result;
+  }
+
+  public List<Map<String, Object>> getStatsForPitcher(int gameId, int teamId) {
+    Game game = gamesDao.findById(gameId, teamId);
+    JsonArray lineups = game.isTopFlg()
+                            ? JsonParser.parseString(game.getTopLineup()).getAsJsonArray()
+                            : JsonParser.parseString(game.getBottomLineup()).getAsJsonArray();
+
+    List<Map<String, Object>> result = new ArrayList<>();
+    List<Integer> registerdPlayers = new ArrayList<>();
+    for (JsonElement lineup : lineups) {
+      JsonArray orderDetails = lineup.getAsJsonObject().get("orderDetails").getAsJsonArray();
+      for (JsonElement playerInfo : orderDetails) {
+        int playerId = playerInfo.getAsJsonObject().get("playerId").getAsInt();
+        if (!registerdPlayers.contains(playerId) && playerInfo.getAsJsonObject().get("fieldNumber").getAsInt() == 1) {
+          registerdPlayers.add(playerId);
+          Map<String, Object> tempMap = new LinkedHashMap<>();
+          Player player = playersDao.findByIdOnly(playerId);
+          List<AtBat> playerAtBats = new ArrayList<>();
+          List<AtBat> atBats = atBatsDao.findByGameId(gameId);
+          if (atBats != null) {
+            for (AtBat atBat : atBats) {
+              if (atBat.getPitcherId() == playerId) {
+                playerAtBats.add(atBat);
+              }
+            }
+          }
+
+          int gotOuts = 0;
+          int hit = 0;
+          int hr = 0;
+          int k = 0;
+          int bb = 0;
+          int er = 0;
+          int r = 0;
+
+          if (playerAtBats != null) {
+            int outCount = 0;
+            for (AtBat atBat : playerAtBats) {
+              if (atBat.getCompleteFlg() != null && atBat.getCompleteFlg()) {
+                switch (atBat.getResult()) {
+                  case 0:
+                    hit++;
+                    break;
+                  case 1:
+                    hit++;
+                    break;
+                  case 2:
+                    hit++;
+                    break;
+                  case 3:
+                    hit++;
+                    hr++;
+                    break;
+                  case 4:
+                    bb++;
+                    break;
+                  case 5:
+                    bb++;
+                    break;
+                  case 9:
+                    k++;
+                    break;
+                  case 10:
+                    k++;
+                    break;
+                }
+              }
+              List<Event> events = eventsDao.findByAtBatId(atBat.getId(), teamId);
+              if (events != null) {
+                for (Event event : events) {
+                  if (outCount != event.getResultOutCount()) {
+                    gotOuts += event.getResultOutCount() - outCount;
+                    outCount += (event.getResultOutCount() - outCount);
+                    if (outCount == 3) {
+                      outCount = 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          tempMap.put("name", player.getName());
+          tempMap.put("inning", this.formatOutCount(gotOuts));
+          tempMap.put("er", er);
+          tempMap.put("r", r);
+          tempMap.put("k", k);
+          tempMap.put("hit", hit);
+          tempMap.put("hr", hr);
+          tempMap.put("bb", bb);
+          result.add(tempMap);
+        }
+      }
+    }
+    return result;
+  }
+
+  private String formatOutCount(int gotOuts) {
+    int inning = gotOuts / 3;
+    int additional = gotOuts % 3;
+    String result = additional == 0 ? String.valueOf(inning) : inning + " " + additional + "/3";
     return result;
   }
 
