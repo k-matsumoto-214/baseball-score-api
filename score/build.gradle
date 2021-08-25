@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'basaball'
-version = '0.0.1'
+version = ''
 sourceCompatibility = '11'
 
 configurations {
@@ -16,6 +16,10 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+bootJar {
+    launchScript()
 }
 
 dependencies {

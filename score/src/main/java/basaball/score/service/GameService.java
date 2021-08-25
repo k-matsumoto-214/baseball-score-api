@@ -155,13 +155,13 @@ public class GameService {
     int bottomHit = 0;
 
     for (AtBat atBat : atBats) {
-      if ((atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 2 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
+      if ((atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 1 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
         topHit++;
       }
       if ((atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 6 || atBat.getResult() == 10)) {
         bottomError++;
       }
-      if ((!atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 2 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
+      if ((!atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 0 || atBat.getResult() == 1 || atBat.getResult() == 2 || atBat.getResult() == 3)) {
         bottomHit++;
       }
       if ((!atBat.isTopFlg() && atBat.getResult() != null) && (atBat.getResult() == 6 || atBat.getResult() == 10)) {
