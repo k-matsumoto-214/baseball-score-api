@@ -60,7 +60,7 @@ public class PlayersDao {
   }
 
   public List<Player> findByTeamId(int teamId) {
-    String sql = "select * from players where team_id = :teamId and delete_flg = false";
+    String sql = "select * from players where team_id = :teamId";
 
     SqlParameterSource parameters = new MapSqlParameterSource("teamId", teamId);
 

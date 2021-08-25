@@ -91,8 +91,13 @@ public class GameController {
     return utilService.responseFromObject(gameService.getProcess(gameId, team.getId()));
   }
 
-  @GetMapping("/games/stats/{gameId}")
-  public ResponseEntity<Object> fetchGameStats(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
-    return utilService.responseFromObject(gameService.getStats(gameId, team.getId()));
+  @GetMapping("/games/stats/batters/{gameId}")
+  public ResponseEntity<Object> fetchGameStatsForBatter(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(gameService.getStatsForBatter(gameId, team.getId()));
+  }
+
+  @GetMapping("/games/stats/pitchers/{gameId}")
+  public ResponseEntity<Object> fetchGameStatsForPitcher(@AuthenticationPrincipal LoginTeam team, @PathVariable int gameId) throws DataNotFoundException {
+    return utilService.responseFromObject(gameService.getStatsForPitcher(gameId, team.getId()));
   }
 }

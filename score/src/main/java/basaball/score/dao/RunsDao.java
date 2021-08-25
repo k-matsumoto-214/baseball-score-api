@@ -101,4 +101,19 @@ public class RunsDao {
       return resultList;
     }
   }
+
+  public List<Run> findByPitcherIdAndGameId(int pitcherId, int gameId) {
+    String sql = "select * from runs where pitcher_id = :pitcherId and game_id = :gameId";
+    SqlParameterSource parameters = new MapSqlParameterSource("pitcherId", pitcherId)
+                                        .addValue("gameId", gameId);
+
+    RowMapper<Run> rowMapper = new BeanPropertyRowMapper<Run>(Run.class);
+
+    List<Run> resultList = jdbcTemplate.query(sql, parameters, rowMapper);
+    if (resultList.size() == 0) {
+      return null;
+    } else {
+      return resultList;
+    }
+  }
 }

@@ -41,6 +41,7 @@ public class PlayerService {
     result.put("position", player.getPosition());
     result.put("image", player.getImage());
     result.put("comment", player.getComment());
+    result.put("deleteFlg", player.isDeleteFlg());
 
     return result;
   }
@@ -63,6 +64,7 @@ public class PlayerService {
       tempMap.put("position", player.getPosition());
       tempMap.put("image", player.getImage());
       tempMap.put("comment", player.getComment());
+      tempMap.put("deleteFlg", player.isDeleteFlg());
       result.add(tempMap);
     }
 
