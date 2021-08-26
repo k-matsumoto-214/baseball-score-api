@@ -46,4 +46,12 @@ public class PlayerChangeDao {
       return resultList;
     }
   }
+
+  public int deleteByEventId(int eventId) {
+    String sql = "delete from player_changes where event_id = :eventId";
+
+    SqlParameterSource parameters = new MapSqlParameterSource("eventId", eventId);
+
+    return jdbcTemplate.update(sql, parameters);
+  }
 }
