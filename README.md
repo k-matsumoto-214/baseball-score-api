@@ -19,6 +19,4 @@
 野球のスコアを速報形式で記録します。(スマホ向け）  
 打席の結果を詳細に記録するのでランナー別の打率、打球方向の割合等も算出可能！！（通算成績算出は開発中）  
 試合の流れを後から振り返れます！！！！！！！  
-  ![front](https://user-images.githubusercontent.com/85728967/128603767-0ffa0ec8-89a9-43bf-adeb-5cd8ce21ceb4.png)  
-  ![front (1)](https://user-images.githubusercontent.com/85728967/128603771-de511091-b514-4464-b77f-85bdbb852d2c.png)
-
+  ![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/d5aa868e-de1f-4e1b-8281-4a9401268d35)![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/d5d189df-5b8c-47b2-9ebd-fc0fd9e39d38)![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b4a600d0-f038-4f21-8feb-d03d37ba3ba3)
