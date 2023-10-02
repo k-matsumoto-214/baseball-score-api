@@ -1,7 +1,6 @@
-公開停止中
+# https://baseball.keismats.com/
 
-
-  # 野球スコア記録アプリ(初作成)  
+## 野球スコア記録アプリ(初作成)   
   
 ## サンプルアカウント  
 ### accountId: testtest  
