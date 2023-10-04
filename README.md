@@ -1,22 +1,41 @@
-# https://baseball.keismats.com/
+# 野球スコア記録WEBアプリ(https://baseball.keismats.com/)
+テストアカウント（下記は入力済みです。そのままログインボタンを押下すればログイン可能です。）
+- accountId: testtest  
+- password: password
 
-## 野球スコア記録アプリ(初作成)   
+### 目的
+- 趣味の草野球の試合結果・打席結果を記録できるサービスが欲しかった
+  - 単なるスコア・ヒット数などの記録だけでは満足できなかった
+  - 同様のサービスもあったが操作が複雑・カウントの記録が詳細すぎるという不満があった
+  - 試合の流れを速報形式で振り返られるようにしたかった（[スポナビさんの一球速報](https://baseball.yahoo.co.jp/npb/game/2021019604/text)のように）
   
-## サンプルアカウント  
-### accountId: testtest  
-### password: password
-  
-## 仕様技術  
-フロント　⇒　https://github.com/keisuke-nao-baseball/baseball-score
-- フロント
+### 使用技術  
+- API
+  - Java
+  - SpringBoot
+- [フロント](https://github.com/k-matsumoto-214/baseball-score)
+  - Vue.js
   - Nuxt.js
   - Vuetify
-- サーバー
-  - SpringBoot
 - DB
   - MySQL
-  
-野球のスコアを速報形式で記録します。(スマホ向け）  
-打席の結果を詳細に記録するのでランナー別の打率、打球方向の割合等も算出可能！！（通算成績算出は開発中）  
-試合の流れを後から振り返れます！！！！！！！  
-  ![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/d5aa868e-de1f-4e1b-8281-4a9401268d35)![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/d5d189df-5b8c-47b2-9ebd-fc0fd9e39d38)![image](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b4a600d0-f038-4f21-8feb-d03d37ba3ba3)
+
+### できること
+- チームの新規登録・ログイン
+  - バックエンドでJWTを発行してのログイン管理 
+- 打席の結果の記録
+  - 打席結果によって進塁したランナー・得点などを記録
+  - 打席中に起こった盗塁・暴投・捕逸などを記録
+  - 打席結果の打球方向を記録
+- 選手交代の記録
+  - 代打・代走の記録
+  - 守備交代・守備位置変更の記録
+- 試合結果・内容の閲覧
+  - 試合中にも随時速報形式で閲覧可能
+  - 打席前後のランナー進塁等も閲覧可能 
+
+### 動作イメージ
+![login](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b9d51b1f-d770-4a29-a2e6-f96707b45a6f)
+![3BHIT](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/87c52ed5-84af-44ba-a0dd-1d022e08e54e)
+![steal](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b3f6a267-09c1-4022-993b-b9b445357758)
+![game-score](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/0698e082-5ae0-450c-b895-f9bc2d789121)
