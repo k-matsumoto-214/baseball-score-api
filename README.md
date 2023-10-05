@@ -39,3 +39,5 @@
 ![3BHIT](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/87c52ed5-84af-44ba-a0dd-1d022e08e54e)
 ![steal](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b3f6a267-09c1-4022-993b-b9b445357758)
 ![game-score](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/0698e082-5ae0-450c-b895-f9bc2d789121)
+![stamen](https://github.com/k-matsumoto-214/baseball-score-api/assets/91876695/92ca0dec-d01e-4147-89f2-f6fbf1e06595)
+
