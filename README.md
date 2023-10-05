@@ -35,9 +35,8 @@
   - 打席前後のランナー進塁等も閲覧可能 
 
 ### 動作イメージ
-![login](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b9d51b1f-d770-4a29-a2e6-f96707b45a6f)
-![3BHIT](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/87c52ed5-84af-44ba-a0dd-1d022e08e54e)
-![steal](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/b3f6a267-09c1-4022-993b-b9b445357758)
-![game-score](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/0698e082-5ae0-450c-b895-f9bc2d789121)
-![stamen](https://github.com/k-matsumoto-214/baseball-score-api/assets/91876695/92ca0dec-d01e-4147-89f2-f6fbf1e06595)
+![stamen](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/e47c8e3c-5f76-4d23-b689-029d43be2ae8)
+![HR](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/5fa1db78-3c3a-476f-b8a1-62f246b7f154)
+![steal](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/6249c40b-ea70-4f60-b1cc-839c498a8e93)
+![score](https://github.com/k-matsumoto-214/baseball-score/assets/91876695/a651de65-9945-47a6-a7e3-05c2d34cc68c)
 
